@@ -3,8 +3,6 @@
   <head>
     <script src="jquery.js"></script>
     <script src="data_generator.js"></script>
-  </head>
-  <body>
     <script>
 
       $(document).ready(function(){
@@ -17,8 +15,8 @@
       });
 
       function updateTweets() {
-        var $body = $('body');
-        $body.html('');
+        var $container = $('#tweet-container');
+        $container.html('');
 
         var index = streams.home.length - 1;
         // while(index >= 0){
@@ -26,13 +24,15 @@
           var tweet = streams.home[index];
           var $tweet = $('<div></div>');
           $tweet.text(tweet.created_at + ' @' + tweet.user + ': ' + tweet.message);
-          $tweet.appendTo($body);
+          $tweet.appendTo($container);
           index -= 1;
         }
-
       }
 
 
     </script>
+  </head>
+  <body>
+    <div id="tweet-container"></div>
   </body>
 </html>
