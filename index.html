@@ -8,6 +8,15 @@
     <script>
 
       $(document).ready(function(){
+
+        updateTweets();
+        var intervalID = window.setInterval(function() {
+          updateTweets();
+        }, 500);
+
+      });
+
+      function updateTweets() {
         var $body = $('body');
         $body.html('');
 
@@ -20,7 +29,8 @@
           index -= 1;
         }
 
-      });
+      }
+
 
     </script>
   </body>
