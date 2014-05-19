@@ -22,7 +22,7 @@
         // while(index >= 0){
         for (var i = 0; i < 10; i++) {
           var tweet = streams.home[index];
-          var $tweet = $('<div></div>');
+          var $tweet = $('<div class="tweet"></div>');
           $tweet.text(tweet.created_at + ' @' + tweet.user + ': ' + tweet.message);
           $tweet.appendTo($container);
           index -= 1;
@@ -31,6 +31,21 @@
 
 
     </script>
+    <style type="text/css">
+      body {
+        font-family: sans-serif;
+      }
+      #tweet-container {
+        /*border: 1px solid red;*/
+        width: 60%;
+        margin: 10px auto;
+      }
+      .tweet {
+        /*border: 1px solid black;*/
+        padding: 20px;
+        margin-bottom: 10px;
+      }
+    </style>
   </head>
   <body>
     <div id="tweet-container"></div>
