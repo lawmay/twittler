@@ -5,27 +5,34 @@
     <script src="data_generator.js"></script>
     <script>
 
+      var intervalTime = 500;
+
       $(document).ready(function(){
 
-        updateTweets();
-        var intervalID = window.setInterval(function() {
-          updateTweets();
-        }, 500);
+        loadStreamTweets(null);
 
       });
 
-      function updateTweets() {
+
+      function loadUserTweets(username, oldIntervalID) {
+        clearInterval(oldIntervalID);
+
+        $( "#container-header" ).html('@' + username.toString());
+        var $backButton = $('<div class="back"><< back</div>');
+        $backButton.appendTo($( "#container-header" ));
+
         var $container = $('#tweet-container');
         $container.html('');
 
-        var index = streams.home.length - 1;
-        // while(index >= 0){
-        for (var i = 0; i < 10; i++) {
-          var tweet = streams.home[index];
+        var index = streams.users[username].length - 1;
+        var loopLimit = streams.users[username].length;
+        for (var i = 0; i < loopLimit; i++) {
+          console.log(streams.users[username]);
+          var tweet = streams.users[username][index];
 
           var formattedDate = tweet.created_at.toString().split(' ').slice(0,5).join(' ');
           var tweetDate = '<div class="tweet-date">' + formattedDate + '</div>';
-          var tweetUser = '<a class="tweet-user" href="">@' + tweet.user + '</a>';
+          var tweetUser = '<span class="tweet-user" name="'+tweet.user+'">@' + tweet.user + '</span>';
           var tweetMessage = ': ' + tweet.message;
 
           var $tweet = $('<div class="tweet"></div>');
@@ -35,6 +42,54 @@
           $tweet.appendTo($container);
           index -= 1;
         }
+
+        var intervalID = window.setInterval(function() {
+          loadUserTweets(username, intervalID);
+        }, intervalTime);
+
+
+        $( ".back" ).on( "click", function() {
+          loadStreamTweets(intervalID);
+        });
+      }
+
+
+      function loadStreamTweets(oldIntervalID) {
+        clearInterval(oldIntervalID);
+
+        $( "#container-header" ).html('Tweets');
+
+        var $container = $('#tweet-container');
+        $container.html('');
+
+        var index = streams.home.length - 1;
+        var loopLimit = streams.home.length;
+        for (var i = 0; i < loopLimit; i++) {
+          var tweet = streams.home[index];
+
+          var formattedDate = tweet.created_at.toString().split(' ').slice(0,5).join(' ');
+          var tweetDate = '<div class="tweet-date">' + formattedDate + '</div>';
+          var tweetUser = '<span class="tweet-user" name="'+tweet.user+'">@' + tweet.user + '</span>';
+          var tweetMessage = ': ' + tweet.message;
+
+          var $tweet = $('<div class="tweet"></div>');
+          $tweet.append(tweetDate);
+          $tweet.append(tweetUser);
+          $tweet.append(tweetMessage);
+          $tweet.appendTo($container);
+          index -= 1;
+        }
+
+        var intervalID = window.setInterval(function() {
+          loadStreamTweets(intervalID);
+        }, intervalTime);
+
+        $( ".tweet-user" ).on( "click", function() {
+          var username = $(this).attr('name');
+          loadUserTweets(username, intervalID);
+        });
+
+
       }
 
 
@@ -70,6 +125,7 @@
       }
       .tweet-user {
         color: #4099ff;
+        cursor: pointer;
         text-decoration: none;
       }
       .tweet-date {
@@ -78,11 +134,17 @@
         margin-bottom: 14px;
         text-align: right;
       }
+      .back {
+        color: #4099ff;
+        cursor: pointer;
+        text-align: right;
+        font-size: 14px;
+      }
     </style>
   </head>
   <body>
     <div id="container">
-      <div id="container-header">Tweets</div>
+      <div id="container-header"></div>
       <div id="tweet-container"></div>
     </div>
   </body>
