@@ -3,6 +3,7 @@
   <head>
     <script src="jquery.js"></script>
     <script src="data_generator.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.6.0/moment.js"></script>
     <script>
 
       var intervalTime = 500;
@@ -30,7 +31,7 @@
           console.log(streams.users[username]);
           var tweet = streams.users[username][index];
 
-          var formattedDate = tweet.created_at.toString().split(' ').slice(0,5).join(' ');
+          var formattedDate = moment(tweet.created_at).startOf('second').fromNow();
           var tweetDate = '<div class="tweet-date">' + formattedDate + '</div>';
           var tweetUser = '<span class="tweet-user" name="'+tweet.user+'">@' + tweet.user + '</span>';
           var tweetMessage = ': ' + tweet.message;
@@ -67,7 +68,8 @@
         for (var i = 0; i < loopLimit; i++) {
           var tweet = streams.home[index];
 
-          var formattedDate = tweet.created_at.toString().split(' ').slice(0,5).join(' ');
+          // var formattedDate = tweet.created_at.toString().split(' ').slice(0,5).join(' ');
+          var formattedDate = moment(tweet.created_at).startOf('second').fromNow();
           var tweetDate = '<div class="tweet-date">' + formattedDate + '</div>';
           var tweetUser = '<span class="tweet-user" name="'+tweet.user+'">@' + tweet.user + '</span>';
           var tweetMessage = ': ' + tweet.message;
