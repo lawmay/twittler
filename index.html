@@ -12,7 +12,16 @@
 
       $(document).ready(function(){
 
+        $( "#refresh-button" ).on( "click", function() {
+          if (viewingStream) {
+            loadStreamTweets();
+          } else {
+            loadUserTweets(username);
+          }
+        });
+
         loadStreamTweets();
+
 
       });
 
@@ -52,14 +61,6 @@
           loadStreamTweets();
         });
 
-        $( "#refresh-button" ).on( "click", function() {
-            if (viewingStream) {
-              loadStreamTweets();
-            } else {
-              loadUserTweets(username);
-            }
-          });
-
       }
 
 
@@ -96,13 +97,6 @@
           loadUserTweets(currentUsername);
         });
 
-        $( "#refresh-button" ).on( "click", function() {
-          if (viewingStream) {
-            loadStreamTweets();
-          } else {
-            loadUserTweets(username);
-          }
-        });
 
       }
 
