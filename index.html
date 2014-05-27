@@ -10,15 +10,33 @@
       var username;
 
 
+      var addUserTweet = function(user, message){
+        if (streams.users[user] === undefined) {
+          streams.users[user] = [];
+        }
+        var tweet = {};
+        tweet.user = user;
+        tweet.message = message;
+        tweet.created_at = new Date();
+        addTweet(tweet);
+      };
+
+
       $(document).ready(function(){
 
         $( "#refresh-button" ).on( "click", function() {
-          if (viewingStream) {
-            loadStreamTweets();
-          } else {
-            loadUserTweets(username);
-          }
+          viewingStream ? loadStreamTweets() : loadUserTweets(username);
         });
+
+        $( "#tweet-box-button" ).on( "click", function() {
+          var newUser = $( "#tweet-username" ).val();
+          var newTweet = $( "#tweet-data" ).val();
+          addUserTweet(newUser, newTweet);
+
+          viewingStream ? loadStreamTweets() : loadUserTweets(username);
+
+        });
+
 
         loadStreamTweets();
 
@@ -107,6 +125,10 @@
         font-family: sans-serif;
         background-color: black;
       }
+      #container {
+        margin: 10px auto 40px auto;
+        width: 1200px;
+      }
       #stream-container {
         background-color: white;
         width: 50%;        
@@ -170,14 +192,84 @@
       #refresh-button:active {
         background-color: rgba(255,255,255,0.9);
       }
-      #container {
-        margin: 10px auto 40px auto;
-        width: 1200px;
+      #tweet-box {
+        float: left;
+        height: 254px;
+        width: 270px;
+        border-radius: 8px;
+        background-color: rgba(255,255,255,0.99);
+        text-align: center;
+        font-size: 26px;
+        font-weight: 100;
+        color: #666;
+        border: 1px solid #aaa;
+        margin-left: 8px;
+      }
+      #tweet-box-header {
+        height: 50px;
+        border-bottom: 1px solid #ccc;
+      }
+      #tweet-box-header textarea {
+        height: 18px;
+        width: 204px;
+        margin: 10px 10px 10px 0px;
+        padding: 6px;
+        border: 1px solid #ddd;
+        font-size: 14px;
+        float: right;
+        resize: none;
+        overflow: auto;
+        outline: none;
+      }
+      #tweet-box-main textarea {
+        height: 130px;
+        width: 234px;
+        margin-top: 8px;
+        border: 1px solid #ddd;
+        font-size: 14px;
+        resize: none;
+        overflow: auto;
+        outline: none;
+        padding: 6px;
+      }
+      #tweet-box-button {
+        float: right;
+        width: 94px;
+        height: 30px;
+        border-radius: 6px;
+        border: 1px solid #ddd;
+        font-size: 20px;
+        margin-right: 10px;
+        color: #777;
+        cursor: pointer;
+        letter-spacing: -1px;
+        padding-top: 6px;
+      }
+      #tweet-box-button:hover {
+        background-color: #f6f8fa;
+      }
+      #tweet-box-button:active {
+        background-color: rgba(242,242,242,1);
+      }
+      #at-sign {
+        margin: 10px 0px 0px 2px;
+        display: inline-block;
+        color: #777;
       }
     </style>
   </head>
   <body>
     <div id="container">
+      <div id="tweet-box">
+        <div id="tweet-box-header">
+            <div id="at-sign">@</div>
+            <textarea id="tweet-username"></textarea>
+        </div>
+        <div id="tweet-box-main">
+          <textarea id="tweet-data"></textarea>
+        </div>
+        <div id="tweet-box-button" type="button">Tweet</div>
+      </div>
       <div id="refresh-button" type="button">Refresh</div>
       <div id="stream-container">
         <div id="container-header"></div>
